@@ -15,12 +15,12 @@ export default class ErrorPage extends React.Component<void, IErrorPageState> {
   }
 
   componentWillMount() {
-    APMService.getInstance().startTransaction('ErrorPage');
+    // APMService.getInstance().startTransaction('ErrorPage');
     punish();
   }
 
   componentWillUnmount() {
-    APMService.getInstance().endTransaction(false);
+    // APMService.getInstance().endTransaction(false);
   }
 
   componentDidMount() {
@@ -30,8 +30,8 @@ export default class ErrorPage extends React.Component<void, IErrorPageState> {
       const xhr = new XMLHttpRequest();
       xhr.open('GET', url('api/error'), true);
       xhr.onload = function(e) {
-        APMService.getInstance().captureError(JSON.parse(xhr.responseText).message);
-        APMService.getInstance().endTransaction(true);
+        // APMService.getInstance().captureError(JSON.parse(xhr.responseText).message);
+        // APMService.getInstance().endTransaction(true);
         this.setState({'error': JSON.parse(xhr.responseText)});
       }.bind(this);
       xhr.send(null);

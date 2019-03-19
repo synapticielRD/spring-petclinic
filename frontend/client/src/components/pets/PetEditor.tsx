@@ -68,16 +68,16 @@ export default class PetEditor extends React.Component<IPetEditorProps, IPetEdit
     }
 
     const url = editablePet.isNew ? 'api/pets' :  'api/pets/' + editablePet.id;
-    APMService.getInstance().startTransaction( editablePet.isNew ? 'CreatePet' : 'UpdatePet');
+    // APMService.getInstance().startTransaction( editablePet.isNew ? 'CreatePet' : 'UpdatePet');
 
     xhr_submitForm(editablePet.isNew ? 'POST' : 'PUT', url, request, (status, response) => {
       if (status === 204 || status === 201) {
-        APMService.getInstance().endTransaction(true);
+        // APMService.getInstance().endTransaction(true);
         this.context.router.push({
           pathname: '/owners/' + owner.id
         });
       } else {
-        APMService.getInstance().endTransaction(false);
+        // APMService.getInstance().endTransaction(false);
         console.log('ERROR?!...', response);
         this.setState({ error: response });
       }

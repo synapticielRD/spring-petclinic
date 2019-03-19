@@ -35,7 +35,7 @@ export default class VisitsPage extends React.Component<IVisitsPageProps, IVisit
   constructor(props) {
     super(props);
     this.initial_render = true;
-    APMService.getInstance().startTransaction('VisitsPage');
+    // APMService.getInstance().startTransaction('VisitsPage');
     punish();
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -45,28 +45,28 @@ export default class VisitsPage extends React.Component<IVisitsPageProps, IVisit
     const { params } = this.props;
     if (params && params.ownerId) {
       xhr_request(`api/owners/${params.ownerId}`, (status, owner) =>  {
-        APMService.getInstance().startSpan('Page Render', 'react');
+        // APMService.getInstance().startSpan('Page Render', 'react');
         this.setState( { owner: owner, visit: { id: null, isNew: true, date: null, description: '' } });
       });
     }
   }
 
   componentWillUnmount() {
-    APMService.getInstance().endSpan();
-    APMService.getInstance().endTransaction(false);
+    // APMService.getInstance().endSpan();
+    // APMService.getInstance().endTransaction(false);
   }
 
   componentDidUpdate() {
     if (this.initial_render) {
-      APMService.getInstance().endSpan();
-      APMService.getInstance().endTransaction(true);
+      // APMService.getInstance().endSpan();
+      // APMService.getInstance().endTransaction(true);
     }
     this.initial_render = false;
   }
 
   onSubmit(event) {
     event.preventDefault();
-    APMService.getInstance().startTransaction('CreateVisit');
+    // APMService.getInstance().startTransaction('CreateVisit');
     const petId = this.props.params.petId;
     const { owner, visit } = this.state;
     let pet = owner.pets.find(candidate => candidate.id.toString() === petId);
@@ -97,12 +97,12 @@ export default class VisitsPage extends React.Component<IVisitsPageProps, IVisit
     const url = 'api/visits';
     xhr_submitForm('POST', url, request, (status, response) => {
       if (status === 201) {
-        APMService.getInstance().endTransaction(true);
+        // APMService.getInstance().endTransaction(true);
         this.context.router.push({
           pathname: '/owners/' + owner.id
         });
       } else {
-        APMService.getInstance().endTransaction(false);
+        // APMService.getInstance().endTransaction(false);
         console.log('ERROR?!...', response);
         this.setState({ error: response });
       }

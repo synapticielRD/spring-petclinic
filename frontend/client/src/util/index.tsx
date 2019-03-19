@@ -11,12 +11,12 @@ export const xhr_request = (path: string, onSuccess: (status: number, response: 
     if (xhr.status < 400) {
         onSuccess(xhr.status, JSON.parse(xhr.responseText));
     } else {
-      APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
+      // APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
       onSuccess(xhr.status, {});
     }
   };
   xhr.onerror = function(e) {
-     APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
+     // APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
      onSuccess(xhr.status, {});
   };
   xhr.send(null);
@@ -31,7 +31,7 @@ export const request = (path: string, onSuccess: (status: number, response: any)
                 onSuccess(response.status, result);
             });
         } else {
-          APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${response.status} ${response.statusText}`);
+          // APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${response.status} ${response.statusText}`);
           onSuccess(response.status, {});
         }
     });
@@ -54,7 +54,7 @@ export const request_promise = (path: string, method = 'GET', data?: any): any =
         if (response.status < 400) {
             return response.json();
         } else {
-          APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${response.status} ${response.statusText}`);
+          // APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${response.status} ${response.statusText}`);
           return {};
         }
     });
@@ -72,12 +72,12 @@ export const xhr_request_promise = (path: string, method = 'GET', data?: any): a
       if (xhr.status < 400) {
           resolve(JSON.parse(xhr.responseText));
       } else {
-          APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
+          // APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
           reject({});
       }
     };
     xhr.onerror = function(e) {
-      APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
+      // APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
       reject({});
     };
     let payload = null;
@@ -108,7 +108,7 @@ export const submitForm = (method: IHttpMethod, path: string, data: any, onSucce
   return fetch(requestUrl, fetchParams)
     .then(response =>  {
         if (response.status >= 400) {
-            APMService.getInstance().captureError(`Failed ${method} to ${requestUrl} - ${response.status} ${response.statusText}`);
+            // APMService.getInstance().captureError(`Failed ${method} to ${requestUrl} - ${response.status} ${response.statusText}`);
             onSuccess(response.status, `Failed ${method} to ${requestUrl} - ${response.status} ${response.statusText}`);
         } else {
           if (response.status !== 204)  {
@@ -130,7 +130,7 @@ export const xhr_submitForm = (method: IHttpMethod, path: string, data: any, onS
   xhr.setRequestHeader('Accept', 'application/json');
   xhr.onload = function(e) {
     if (xhr.status >= 400) {
-        APMService.getInstance().captureError(`Failed ${method} to ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
+        // APMService.getInstance().captureError(`Failed ${method} to ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
         let errors = xhr.getResponseHeader('errors');
         if (errors) {
           onSuccess(xhr.status, JSON.parse(errors));
@@ -147,7 +147,7 @@ export const xhr_submitForm = (method: IHttpMethod, path: string, data: any, onS
   };
 
   xhr.onerror = function(e) {
-     APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
+     // APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
      onSuccess(xhr.status, {});
   };
   xhr.send(JSON.stringify(data));

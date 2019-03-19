@@ -34,7 +34,7 @@ export default class OwnerEditor extends React.Component<IOwnerEditorProps, IOwn
 
   constructor(props) {
     super(props);
-    APMService.getInstance().startTransaction('OwnerEditor');
+    // APMService.getInstance().startTransaction('OwnerEditor');
     punish();
     this.initial_render = true;
     this.last_used_zip = null;
@@ -64,7 +64,7 @@ export default class OwnerEditor extends React.Component<IOwnerEditorProps, IOwn
         ]
       ).then(response => {
         // TODO: Currently fails silently - maybe warn if error vs no data
-        APMService.getInstance().startSpan('Page Render', 'react');
+        // APMService.getInstance().startSpan('Page Render', 'react');
         let states = response[0] && response[0].states ? response[0].states.map(state => ({ value: state, name: state })) : [];
         states.unshift({'value': '', 'name': ''});
         let cities = response[1] && response[1].cities ? response[1].cities.map(state => ({ value: state, name: state })) : [];
@@ -75,7 +75,7 @@ export default class OwnerEditor extends React.Component<IOwnerEditorProps, IOwn
         });
       });
     } else {
-      APMService.getInstance().startSpan('Page Render', 'react');
+      // APMService.getInstance().startSpan('Page Render', 'react');
       this.setState({
         states: [{'value': '', 'name': ''}],
         cities: [{'value': '', 'name': ''}]
@@ -85,15 +85,15 @@ export default class OwnerEditor extends React.Component<IOwnerEditorProps, IOwn
   }
 
   componentWillUnmount() {
-    APMService.getInstance().endSpan();
-    APMService.getInstance().endTransaction(false);
+    // APMService.getInstance().endSpan();
+    // APMService.getInstance().endTransaction(false);
   }
 
 
   componentDidUpdate() {
     if (this.initial_render) {
-      APMService.getInstance().endSpan();
-      APMService.getInstance().endTransaction(true);
+      // APMService.getInstance().endSpan();
+      // APMService.getInstance().endTransaction(true);
     }
     this.initial_render = false;
   }
@@ -103,17 +103,17 @@ export default class OwnerEditor extends React.Component<IOwnerEditorProps, IOwn
     const { owner } = this.state;
     const url = owner.isNew ? 'api/owners' : 'api/owners/' + owner.id;
     this.setState({ error: {'fieldErrors': {}}, loading: true });
-    APMService.getInstance().startTransaction( owner.isNew ? 'CreateOwner' : 'UpdateOwner');
+    // APMService.getInstance().startTransaction( owner.isNew ? 'CreateOwner' : 'UpdateOwner');
     event.preventDefault();
     xhr_submitForm(owner.isNew ? 'POST' : 'PUT', url, owner, (status, response) => {
       if (status === 204 || status === 201) {
-        APMService.getInstance().endTransaction(true);
+        // APMService.getInstance().endTransaction(true);
         const owner_id = owner.isNew ? (response as IOwner).id : owner.id;
         this.context.router.push({
           pathname: '/owners/' + owner_id
         });
       } else {
-        APMService.getInstance().endTransaction(false);
+        // APMService.getInstance().endTransaction(false);
         let fieldErrors = response.reduce(function(map, error) {
             map[error.fieldName] = { 'field': error.fieldName, 'message': error.errorMessage };
             return map;
@@ -156,12 +156,12 @@ export default class OwnerEditor extends React.Component<IOwnerEditorProps, IOwn
       if (xhr.status ===  200) {
           onSuccess(JSON.parse(xhr.responseText));
       } else {
-        APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
+        // APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
         onSuccess(null);
       }
     };
     xhr.onerror = function(e) {
-       APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
+       // APMService.getInstance().captureError(`Failed GET on ${requestUrl} - ${xhr.status} ${xhr.statusText}`);
        onSuccess(null);
     };
     let payload = null;
@@ -175,14 +175,14 @@ export default class OwnerEditor extends React.Component<IOwnerEditorProps, IOwn
   onZipChange(name: string, value: string) {
     const { owner } = this.state;
     if (value.trim() !== '' && this.last_used_zip !== value) {
-      APMService.getInstance().startTransaction('OwnerEditor:ZipChange');
+      // APMService.getInstance().startTransaction('OwnerEditor:ZipChange');
       const requestUrl = url('api/find_state');
       this.xhr_address_service_fetch(requestUrl, { zip_code: value }, (data) => {
         if (data) {
           let states = data.states ? data.states.map(state => ({ value: state, name: state })) : [];
           const modifiedOwner = Object.assign({}, owner, { [name]: value, ['state']: '', ['city']: '' });
           states.unshift({'value': '', 'name': ''});
-          APMService.getInstance().endTransaction(true);
+          // APMService.getInstance().endTransaction(true);
           this.last_used_zip = value;
           this.setState({
             owner: modifiedOwner,
@@ -191,14 +191,14 @@ export default class OwnerEditor extends React.Component<IOwnerEditorProps, IOwn
           });
         } else {
           // TODO: silent failure curently. Indicate failure to user
-          APMService.getInstance().endTransaction(false);
+          // APMService.getInstance().endTransaction(false);
         }
       });
     }
   }
 
   onStateChange(name: string, value: string, fieldError: IFieldError) {
-    APMService.getInstance().startTransaction('OwnerEditor:StateChange');
+    // APMService.getInstance().startTransaction('OwnerEditor:StateChange');
     const requestUrl = url('api/find_city');
     const { owner } = this.state;
     const modifiedOwner = Object.assign({}, owner, { [name]: value, ['city']: '' });
@@ -209,13 +209,13 @@ export default class OwnerEditor extends React.Component<IOwnerEditorProps, IOwn
       if (data) {
         let cities = data.cities ? data.cities.map(city => ({ value: city, name: city })) : [];
         cities.unshift({'value': '', 'name': ''});
-        APMService.getInstance().endTransaction(true);
+        // APMService.getInstance().endTransaction(true);
         this.setState({
           cities: cities
         });
       } else {
         // TODO: silent failure curently. Indicate failure to user
-        APMService.getInstance().endTransaction(false);
+        // APMService.getInstance().endTransaction(false);
       }
     });
   }
@@ -231,14 +231,14 @@ export default class OwnerEditor extends React.Component<IOwnerEditorProps, IOwn
   onAddressFetch(value: string, onSuccess: (data: any) => void ) {
     const { owner } = this.state;
     if (value.length > 3 && /\s/.test(value) && value !== owner.address) {
-      APMService.getInstance().startTransaction('OwnerEditor:FindAddress');
+      // APMService.getInstance().startTransaction('OwnerEditor:FindAddress');
       const requestUrl = url('api/find_address');
       this.xhr_address_service_fetch(requestUrl, { zip_code: owner.zipCode, state: owner.state, city: owner.city, address: owner.address }, (data) => {
         if (data) {
           onSuccess(data.addresses);
-          APMService.getInstance().endTransaction(true);
+          // APMService.getInstance().endTransaction(true);
         } else {
-          APMService.getInstance().endTransaction(false);
+          // APMService.getInstance().endTransaction(false);
         }
 
         // TODO: silent failure curently. Indicate failure to user
