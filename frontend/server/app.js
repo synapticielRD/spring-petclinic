@@ -125,12 +125,12 @@ function apmCaptureError ( proxyRes, proxyResData, userReq ) {
 app.use('/api/find_state', proxy(settings.address_server, {
     preserveHostHdr: true,
     proxyReqPathResolver: function (req) {
-      startAPMTransaction( '/api/find_state', req );
+//      startAPMTransaction( '/api/find_state', req );
       return '/api/find_state'
     },
     userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
       if (proxyRes.statusCode >= 400) {
-        apmCaptureError( proxyRes, proxyResData, userReq );
+//        apmCaptureError( proxyRes, proxyResData, userReq );
       }
       return proxyResData
     }
@@ -139,12 +139,12 @@ app.use('/api/find_state', proxy(settings.address_server, {
 app.use('/api/find_city', proxy(settings.address_server, {
     preserveHostHdr: true,
     proxyReqPathResolver: function (req) {
-      startAPMTransaction('/api/find_city', req);
+//      startAPMTransaction('/api/find_city', req);
       return '/api/find_city'
     },
     userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
       if (proxyRes.statusCode >= 400) {
-        apmCaptureError( proxyRes, proxyResData, userReq );
+//        apmCaptureError( proxyRes, proxyResData, userReq );
       }
       return proxyResData
     }
@@ -153,12 +153,12 @@ app.use('/api/find_city', proxy(settings.address_server, {
 app.use('/api/find_address', proxy(settings.address_server, {
     preserveHostHdr: true,
     proxyReqPathResolver: function (req) {
-      startAPMTransaction('/api/find_address', req);
+//      startAPMTransaction('/api/find_address', req);
       return '/api/find_address'
     },
     userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
       if (proxyRes.statusCode >= 400) {
-        apmCaptureError( proxyRes, proxyResData, userReq );
+//        apmCaptureError( proxyRes, proxyResData, userReq );
       }
       return proxyResData
     }
@@ -168,12 +168,12 @@ app.use('/api/find_address', proxy(settings.address_server, {
 app.use('/api', proxy(settings.api_server, {
     preserveHostHdr: true,
     proxyReqPathResolver: function (req) {
-      startAPMTransaction('/api/'+req.url.split('/').filter(c => c != '').slice(0,1)[0], req);
+//      startAPMTransaction('/api/'+req.url.split('/').filter(c => c != '').slice(0,1)[0], req);
       return settings.api_prefix+req.url
     },
     userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
       if (proxyRes.statusCode >= 400) {
-        apmCaptureError( proxyRes, proxyResData, userReq );
+//        apmCaptureError( proxyRes, proxyResData, userReq );
       }
       return proxyResData
     }

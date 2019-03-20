@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const settings = require('../config')
+/*
 var apm = require('elastic-apm-node').start({
   serviceName: settings.apm_service_name,
   serviceVersion: settings.apm_service_version,
@@ -15,6 +16,7 @@ var apm = require('elastic-apm-node').start({
   transactionMaxSpans: -1,
   asyncHooks: false
 })
+*/
 
 /**
  * Module dependencies.
