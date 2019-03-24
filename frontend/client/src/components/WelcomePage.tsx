@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { APMService, punish } from '../main';
 export default class WelcomePage extends React.Component<any, any> {
 
   constructor() {
