@@ -1,7 +1,7 @@
 import json
 from flask import current_app
 import pystache
-#import elasticapm
+import elasticapm
 
 class StateSearch():
     query_renderer = pystache.Renderer()
