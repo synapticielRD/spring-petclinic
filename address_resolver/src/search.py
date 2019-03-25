@@ -1,6 +1,7 @@
 import json
 from flask import current_app
 import pystache
+#import elasticapm
 
 class StateSearch():
     query_renderer = pystache.Renderer()
@@ -12,6 +13,7 @@ class StateSearch():
     def zip_code(self):
         return self.zip_code
 
+#    @elasticapm.capture_span()
     def query(self):
         query = json.loads(self.query_renderer.render(self))
         results = current_app.elasticsearch.search(index=current_app.config['ADDRESS_INDEX'], doc_type='doc', body=query)
@@ -41,6 +43,7 @@ class CitySearch():
     def zip_code(self):
         return self.zip_code
 
+#    @elasticapm.capture_span()
     def query(self):
         query = json.loads(self.query_renderer.render(self))
         results = current_app.elasticsearch.search(index=current_app.config['ADDRESS_INDEX'], doc_type='doc', body=query)
@@ -75,6 +78,7 @@ class AddressSearch():
     def zip_code(self):
         return self.zip_code
 
+#    @elasticapm.capture_span()
     def query(self):
         query = json.loads(self.query_renderer.render(self))
         results = current_app.elasticsearch.search(index=current_app.config['ADDRESS_INDEX'], doc_type='doc', body=query)
