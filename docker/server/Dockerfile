@@ -2,7 +2,7 @@
 
 #Build application stage
 #We need maven.
-FROM maven:3.5.3-jdk-11
+FROM maven:3.5.3-jdk-9
 ARG JAVA_AGENT_VERSION=1.19.0
 ARG JAVA_AGENT_BRANCH=1.x
 ARG JAVA_AGENT_REPO=elastic/apm-agent-java
@@ -31,7 +31,7 @@ RUN cp -v /usr/src/java-agent-code/elastic-apm-agent-${JAVA_AGENT_VERSION}.jar /
 #    && cp -v /usr/src/java-agent-code/elastic-apm-agent/target/elastic-apm-agent-${JAVA_AGENT_BUILT_VERSION}.jar /usr/src/java-app/elastic-apm-agent.jar
 
 
-FROM openjdk:11
+FROM openjdk:9
 
 RUN export
 WORKDIR /app
