@@ -8,7 +8,7 @@ ARG JAVA_AGENT_REPO=elastic/apm-agent-java
 
 WORKDIR /usr/src/java-code
 #build the application
-RUN git clone https://github.com/elastic/spring-petclinic.git
+RUN git clone https://github.com/synapticielRD/spring-petclinic.git
 WORKDIR /usr/src/java-code/spring-petclinic
 RUN mvn -q -B package -DskipTests
 
