@@ -55,6 +55,7 @@ CMD java -javaagent:/app/elastic-apm-agent.jar\
                                         -Delastic.apm.environment=production\
                                         -Delastic.apm.transaction_sample_rate=${APM_SAMPLE_RATE:-1.0}\
                                         -Delastic.apm.server_urls=${ELASTIC_APM_SERVER_URL:-http://localhost:8200}\
+										-Delastic.apm.secret_token=${ELASTIC_APM_SECRET_TOKEN:-xx}\
                                         -Delastic.apm.verify_server_cert=false\
                                         -Delastic.apm.ignore_urls=/health,/metrics*,/jolokia\
                                         -Delastic.apm.log_file=/var/log/apps/apm-spring-petclinic\

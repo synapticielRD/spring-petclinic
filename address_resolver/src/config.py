@@ -26,5 +26,7 @@ class Config(object):
         'CAPTURE_BODY': os.getenv('ELASTIC_APM_CAPTURE_BODY','all'),
         'SPAN_FRAMES_MIN_DURATION': os.getenv('ELASTIC_APM_SPAN_FRAMES_MIN_DURATION','-1'),
         'TRANSACTION_SAMPLE_RATE': os.getenv('ELASTIC_APM_TRANSACTION_SAMPLE_RATE','1.0'),
-        'DEBUG': os.getenv('ELASTIC_APM_DEBUG', False)
+        'DEBUG': os.getenv('ELASTIC_APM_DEBUG', False),
+        'ENVIRONMENT': os.getenv('ELASTIC_APM_ENVIRONMENT','production'),
+        'SERVICE_VERSION': os.getenv('ELASTIC_APM_SERVICE_VERSION','1.1.1')
     }
