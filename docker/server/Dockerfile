@@ -19,17 +19,7 @@ RUN cp -v /usr/src/java-code/spring-petclinic/target/*.jar /usr/src/java-app/app
 
 ## Download the APM java gent
 ## https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/${JAVA_AGENT_VERSION}/elastic-apm-agent-${JAVA_AGENT_VERSION}.jar
-#build the agent
-WORKDIR /usr/src/java-agent-code
-#RUN curl -L https://github.com/$JAVA_AGENT_REPO/archive/$JAVA_AGENT_BRANCH.tar.gz | tar --strip-components=1 -xz
 RUN curl -L https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/${JAVA_AGENT_VERSION}/elastic-apm-agent-${JAVA_AGENT_VERSION}.jar
-
-#RUN mvn -q -B package -DskipTests
-RUN cp -v /usr/src/java-agent-code/elastic-apm-agent-${JAVA_AGENT_VERSION}.jar /usr/src/java-app/elastic-apm-agent.jar
-
-#RUN export JAVA_AGENT_BUILT_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec) \
-#    && cp -v /usr/src/java-agent-code/elastic-apm-agent/target/elastic-apm-agent-${JAVA_AGENT_BUILT_VERSION}.jar /usr/src/java-app/elastic-apm-agent.jar
-
 
 FROM openjdk:9
 
@@ -38,7 +28,7 @@ WORKDIR /app
 
 COPY --from=0 /usr/src/java-app/*.jar ./
 
-CMD java -javaagent:/app/elastic-apm-agent.jar\
+CMD java -javaagent:/app/elastic-apm-agent-${JAVA_AGENT_VERSION}.jar\
                                         -Dspring.profiles.active=${JAVA_PROFILE:-hsqldb,spring-data-jpa}\
                                         -Dserver.port=${SERVER_PORT:-}\
                                         -Delastic.apm.application_packages=org.springframework.samples.petclinic\
