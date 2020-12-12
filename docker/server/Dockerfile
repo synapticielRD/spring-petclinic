@@ -19,8 +19,8 @@ RUN cp -v /usr/src/java-code/spring-petclinic/target/*.jar /usr/src/java-app/app
 
 ## Download the APM java gent
 ## https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/${JAVA_AGENT_VERSION}/elastic-apm-agent-${JAVA_AGENT_VERSION}.jar
-RUN curl -H "Accept: application/zip"  https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/${JAVA_AGENT_VERSION}/elastic-apm-agent-${JAVA_AGENT_VERSION}.jar > elastic-apm-agent.jar
-
+RUN curl -H "Accept: application/zip"  https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/${JAVA_AGENT_VERSION}/elastic-apm-agent-${JAVA_AGENT_VERSION}.jar
+RUN cp -v /usr/src/java-app/elastic-apm-agent-${JAVA_AGENT_VERSION}.jar /usr/src/java-app/elastic-apm-agent.jar
 FROM openjdk:9
 
 RUN export
