@@ -16,17 +16,16 @@ RUN mvn -q -B package -DskipTests
 RUN mkdir /usr/src/java-app
 RUN cp -v /usr/src/java-code/spring-petclinic/target/*.jar /usr/src/java-app/app.jar
 
-
 ## Download the APM java gent
 ## https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/${JAVA_AGENT_VERSION}/elastic-apm-agent-${JAVA_AGENT_VERSION}.jar
-RUN curl -H "Accept: application/zip"  https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/${JAVA_AGENT_VERSION}/elastic-apm-agent-${JAVA_AGENT_VERSION}.jar
-RUN cp -v /usr/src/java-app/elastic-apm-agent-${JAVA_AGENT_VERSION}.jar /usr/src/java-app/elastic-apm-agent.jar
+RUN curl -H "Accept: application/zip"  https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/${JAVA_AGENT_VERSION}/elastic-apm-agent-${JAVA_AGENT_VERSION}.jar > elastic-apm-agent.jar
+
 FROM openjdk:9
 
 RUN export
 WORKDIR /app
 
-COPY --from=0 /usr/src/java-app/*.jar ./
+COPY /usr/src/java-app/*.jar ./
 
 CMD java -javaagent:/app/elastic-apm-agent.jar\
                                         -Dspring.profiles.active=${JAVA_PROFILE:-hsqldb,spring-data-jpa}\
